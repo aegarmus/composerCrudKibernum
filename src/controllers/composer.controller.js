@@ -35,6 +35,24 @@ export class ComposerController {
     }
   }
 
+  static async getAllActive(req, res) {
+    try {
+      const data = await ComposerService.getAllActive();
+
+      res.status(200).json({
+        message: "Archivo leido con éxito",
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      res.status(404).json({
+        message: "No se pudo encontrar la data",
+        statusCode: 404,
+        error,
+      });
+    }
+  }
+
   static async getByID(req, res) {
     try {
       const data = await ComposerService.getByID(req.params.id);
@@ -52,37 +70,88 @@ export class ComposerController {
     }
   }
 
+  static async getActiveByID(req, res) {
+    try {
+      const data = await ComposerService.getActiveByID(req.params.id);
+      res.status(200).json({
+        message: "Archivo leido con éxito",
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      res.status(404).json({
+        message: `Compositor no encontrado`,
+        statusCode: 404,
+        error,
+      });
+    }
+  }
+
   static async update(req, res) {
     try {
-        const data = await ComposerService.update(req.params.id, req.body);
-        res.status(200).json({
-            message: 'Compositor editado con éxito',
-            statusCode: 200,
-            data
-        })
-    } catch(error) {
-        res.status(500).json({
-            message: 'No se pudo editar compositor',
-            statusCode: 500,
-            error
-        })
+      const data = await ComposerService.update(req.params.id, req.body);
+      res.status(200).json({
+        message: "Compositor editado con éxito",
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "No se pudo editar compositor",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  static async updateActive(req, res) {
+    try {
+      const data = await ComposerService.updateActive(req.params.id, req.body);
+      res.status(200).json({
+        message: "Compositor editado con éxito",
+        statusCode: 200,
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "No se pudo editar compositor",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
+
+  static async permaDelete(req, res) {
+    try {
+      await ComposerService.delete(req.params.id);
+
+      res.status(200).json({
+        message: "Compositor eliminado permantemente con éxito",
+        statusCode: 200,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "No se pudo eliminar al compositor",
+        statusCode: 500,
+        error,
+      });
     }
   }
 
   static async delete(req, res) {
     try {
-        await ComposerService.delete(req.params.id)
-
-        res.status(200).json({
-            message: 'Compositor eliminado con éxito',
-            statusCode: 200
-        })
+      await ComposerService.softDelete(req.params.id);
+      res.status(200).json({
+        message: "Compositor eliminado con éxito",
+        statusCode: 200,
+      });
     } catch (error) {
-        res.status(500).json({
-          message: "No se pudo eliminar al compositor",
-          statusCode: 500,
-          error,
-        });
+      res.status(500).json({
+        message: "No se pudo eliminar al compositor",
+        statusCode: 500,
+        error,
+      });
     }
   }
 }
+

@@ -1,0 +1,50 @@
+[
+    {
+        "id": "0c092798-7097-443d-8ac9-6e32076353bb",
+        "name": "Cirilo Vila",
+        "nationality": "Chileno",
+        "birthdate": "1937",
+        "dateDeath": "2015",
+        "isActive": true
+    },
+    {
+        "id": "c043974a-d613-4eac-a826-3ea62a5efa61",
+        "name": "Luigi Nono",
+        "nationality": "Frances",
+        "birthdate": "1862",
+        "dateDeath": "1992",
+        "isActive": true
+    },
+    {
+        "id": "230bee11-0343-4c21-91a1-fbfff59fe27b",
+        "name": "Astor Piazzola",
+        "nationality": "Argentino",
+        "birthdate": "1921",
+        "dateDeath": "1992",
+        "isActive": true
+    },
+    {
+        "id": "fa260438-eb48-4cfe-928a-f7ec58f634d0",
+        "name": "Luigi Nono",
+        "nationality": "Italiano",
+        "birthdate": "1924",
+        "dateDeath": "1990",
+        "isActive": false
+    },
+    {
+        "id": "22123f1f-085d-4899-9ef2-dcd0558262db",
+        "name": "Manuel de Falla",
+        "nationality": "España",
+        "birthdate": "1876",
+        "dateDeath": "1946",
+        "isActive": true
+    },
+    {
+        "id": "c8fcae6c-69a8-4e78-8f0d-bfe10268de6f",
+        "name": "Gyorgy Ligeti",
+        "nationality": "Rumano",
+        "birthdate": "1923",
+        "dateDeath": "2006",
+        "isActive": true
+    }
+]
