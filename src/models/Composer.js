@@ -66,7 +66,7 @@ export class Composer {
     this.#isActive = false;
   }
 
-  activated() {
+  activate() {
     this.#isActive = true;
   }
 

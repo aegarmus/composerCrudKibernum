@@ -29,7 +29,7 @@
         "nationality": "Italiano",
         "birthdate": "1924",
         "dateDeath": "1990",
-        "isActive": false
+        "isActive": true
     },
     {
         "id": "22123f1f-085d-4899-9ef2-dcd0558262db",

@@ -153,5 +153,23 @@ export class ComposerController {
       });
     }
   }
+
+  static async restore(req, res) {
+    try {
+      const data = await ComposerService.restore(req.params.id)
+
+      res.status(200).json({
+        message: "Compositor restaurado con éxito",
+        statusCode: 200,
+        data
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "No se pudo restaurar al compositor",
+        statusCode: 500,
+        error,
+      });
+    }
+  }
 }
 

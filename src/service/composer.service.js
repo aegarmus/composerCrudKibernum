@@ -82,13 +82,10 @@ export class ComposerService {
         return composer.id === id;
       });
 
-      if (!composerFound) throw new Error("Compositor no encontrado");
+      if (!composerFound || !composerFound.isActive) throw new Error("Compositor no encontrado");
 
       const composerInstance = Composer.create(composerFound);
       console.log(composerInstance.toFullJSON());
-
-      if (!composerInstance.isActive)
-        throw new Error("Compositor no encontrado");
 
       return composerInstance.toJSON();
     } catch (error) {
@@ -181,6 +178,28 @@ export class ComposerService {
       await FilesUtils.writeFile(this.#Pathfile, composers);
     } catch (error) {
       console.log("Error al eliminar el compositor:", error.message);
+      throw new Error(error.message);
+    }
+  }
+
+  static async restore(id) {
+    try {
+      const composers = await FilesUtils.readFile(this.#Pathfile)
+      const indexComposer = composers.findIndex(composer => composer.id === id)
+
+      if(indexComposer === -1) throw new Error('No pudimos encontrar al compositor');
+
+      const composerToRestore = composers[indexComposer]
+      const composerInstance = Composer.create(composerToRestore)
+
+      composerInstance.activate()
+
+      composers[indexComposer] = composerInstance.toFullJSON()
+
+      await FilesUtils.writeFile(this.#Pathfile, composers)
+      return composerInstance.toJSON()
+    } catch (error) {
+      console.log("Error al restaurar el compositor:", error.message);
       throw new Error(error.message);
     }
   }

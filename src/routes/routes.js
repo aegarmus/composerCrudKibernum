@@ -12,5 +12,6 @@ router.put("/composers/admin/:id", ComposerController.update);
 router.put("/composers/:id", ComposerController.updateActive);
 router.delete("/composers/admin/:id", ComposerController.permaDelete);
 router.delete("/composers/:id", ComposerController.delete)
+router.patch("/composers/:id", ComposerController.restore)
 
 export default router;
