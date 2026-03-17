@@ -1,4 +1,5 @@
 import { Composer } from "../models/Composer.js";
+import { ComposerError, NotFoundError } from "../utils/errors.util.js";
 import { FilesUtils } from "../utils/file.util.js";
 import { Logger } from "../utils/logger.util.js";
 export class ComposerService {
@@ -41,7 +42,7 @@ export class ComposerService {
       return newComposer.toJSON();
     } catch (error) {
       this.logger.error(`Error al crear el compositor: ${error.message}`);
-      throw new Error(error.message);
+      throw new ComposerError('Error al crear al compositor', error.message);
     }
   }
 
@@ -57,7 +58,7 @@ export class ComposerService {
       return composers;
     } catch (error) {
       console.log(`Error: no se pudo leer los datos`);
-      throw new Error(`Error: no se pudo leer los datos`);
+      throw new ComposerError('Error al leer los datos del compositor', error.message);
     }
   }
 
@@ -77,7 +78,10 @@ export class ComposerService {
       return composers;
     } catch (error) {
       console.log(`Error: no se pudo leer los datos`);
-      throw new Error(`Error: no se pudo leer los datos`);
+      throw new ComposerError(
+        "Error al leer los datos del compositor",
+        error.message,
+      );
     }
   }
 
@@ -87,11 +91,18 @@ export class ComposerService {
       const composerFound = data.find((composer) => {
         return composer.id === id;
       });
-      if (!composerFound) throw new Error("Compositor no encontrado");
+      if (!composerFound)  
+        throw new NotFoundError(
+          "Compositor no encontrado",
+          `No se encontro al compositor con el id ${id}`,
+        );
       return composerFound;
     } catch (error) {
       console.log("No se pudo encontrar el compositor");
-      throw new Error("Error: no se encontró al compositor");
+      throw new ComposerError(
+        "Error al leer los datos del compositor",
+        error.message,
+      );
     }
   }
 
@@ -102,7 +113,11 @@ export class ComposerService {
         return composer.id === id;
       });
 
-      if (!composerFound || !composerFound.isActive) throw new Error("Compositor no encontrado");
+      if (!composerFound || !composerFound.isActive) 
+        throw new NotFoundError(
+          "Compositor no encontrado", 
+          `No se encontro al compositor con el id ${id}`
+        );
 
       const composerInstance = Composer.create(composerFound);
       console.log(composerInstance.toFullJSON());
@@ -110,7 +125,10 @@ export class ComposerService {
       return composerInstance.toJSON();
     } catch (error) {
       console.log("No se pudo encontrar el compositor");
-      throw new Error("Error: no se encontró al compositor");
+      throw new ComposerError(
+        "Error al leer los datos del compositor",
+        error.message,
+      );
     }
   }
 
@@ -122,7 +140,10 @@ export class ComposerService {
       );
 
       if (indexComposer === -1)
-        throw new Error("No se encontró el compositor para actualizar");
+         throw new NotFoundError(
+           "Compositor no encontrado para actualizar",
+           `No se encontro al compositor con el id ${id}`,
+         );
 
       const composerUpdated = Composer.create({ ...newComposer, id });
 
@@ -132,7 +153,7 @@ export class ComposerService {
       return composerUpdated.toJSON();
     } catch (error) {
       console.log("Error al actualizar el compositor:", error.message);
-      throw new Error(error.message);
+      throw new ComposerError('Error al actualizar al compositor',`${error.message}`);
     }
   }
 
@@ -144,7 +165,11 @@ export class ComposerService {
       );
 
       if (indexComposer === -1)
-        throw new Error("No se encontró el compositor para actualizar");
+              throw new NotFoundError(
+                "Compositor no encontrado para actualizar",
+                `No se encontro al compositor con el id ${id}`,
+              );
+
 
       const composerUpdated = Composer.create({ ...newComposer, id });
 
@@ -154,7 +179,10 @@ export class ComposerService {
       return composerUpdated.toJSON();
     } catch (error) {
       console.log("Error al actualizar el compositor:", error.message);
-      throw new Error(error.message);
+      throw new ComposerError(
+        "Error al actualizar al compositor",
+        `${error.message}`,
+      );
     }
   }
 
@@ -166,14 +194,20 @@ export class ComposerService {
       );
 
       if (indexComposer === -1)
-        throw new Error("No pudimos encontrar al compositor");
+        throw new NotFoundError(
+          "Compositor no encontrado para actualizar",
+          `No se encontro al compositor con el id ${id}`,
+        );
 
       composers.splice(indexComposer, 1);
 
       await FilesUtils.writeFile(this.#Pathfile, composers);
     } catch (error) {
       console.log("Error al eliminar el compositor:", error.message);
-      throw new Error(error.message);
+      throw new ComposerError(
+        "Error al eliminar al compositor",
+        `${error.message}`,
+      );
     }
   }
 
@@ -185,8 +219,10 @@ export class ComposerService {
       );
 
       if (indexComposer === -1)
-        throw new Error("No pudimos encontrar al compositor");
-
+        throw new NotFoundError(
+          "Compositor no encontrado para actualizar",
+          `No se encontro al compositor con el id ${id}`,
+        );
       const composerToDelete = composers[indexComposer];
 
       const composerInstance = Composer.create(composerToDelete);
@@ -198,7 +234,10 @@ export class ComposerService {
       await FilesUtils.writeFile(this.#Pathfile, composers);
     } catch (error) {
       console.log("Error al eliminar el compositor:", error.message);
-      throw new Error(error.message);
+      throw new ComposerError(
+        "Error al eliminar al compositor",
+        `${error.message}`,
+      );
     }
   }
 
@@ -207,7 +246,11 @@ export class ComposerService {
       const composers = await FilesUtils.readFile(this.#Pathfile)
       const indexComposer = composers.findIndex(composer => composer.id === id)
 
-      if(indexComposer === -1) throw new Error('No pudimos encontrar al compositor');
+      if(indexComposer === -1) 
+        throw new NotFoundError(
+          "Compositor no encontrado para actualizar",
+          `No se encontro al compositor con el id ${id}`,
+        );
 
       const composerToRestore = composers[indexComposer]
       const composerInstance = Composer.create(composerToRestore)
@@ -220,7 +263,10 @@ export class ComposerService {
       return composerInstance.toJSON()
     } catch (error) {
       console.log("Error al restaurar el compositor:", error.message);
-      throw new Error(error.message);
+      throw new ComposerError(
+        "Error al restaurar al compositor",
+        `${error.message}`,
+      );
     }
   }
 }

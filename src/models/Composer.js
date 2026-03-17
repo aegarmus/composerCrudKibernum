@@ -8,6 +8,7 @@ Composer
     dateDeath
 */
 
+import { ComposerError } from "../utils/errors.util.js";
 import { Validate } from "../utils/validator.util.js";
 
 export class Composer {
@@ -107,7 +108,7 @@ export class Composer {
       
     } catch (error) {
       console.error("Error creating composer:", error);
-      throw new Error("Failed to create composer");
+      throw new ComposerError("Failed to create composer", `Error: ${error.message}`);
     }
   }
 }

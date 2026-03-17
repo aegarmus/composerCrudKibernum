@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 import path from 'path'
+import { InternalServerError } from './errors.util.js';
 
 export class FilesUtils{
 
@@ -11,7 +12,7 @@ export class FilesUtils{
         if (error.code === 'ENOENT') return false;
 
         console.error('[ERROR], no se pudo leer el archivo', error);
-        throw new Error(`[ERROR] Error crítico al leer ${pathFile}:`, error)
+        throw new InternalServerError(`[ERROR] Error crítico al leer ${pathFile}:`, error)
       }
   }
 
@@ -20,7 +21,7 @@ export class FilesUtils{
       await fs.writeFile(pathFile, JSON.stringify(data), 'utf-8')
     } catch (error){
       console.error(`[ERROR] no pudimos escribir el archivo`)
-      throw new Error('Error al escribir el archivo')
+      throw new InternalServerError('Error al escribir el archivo')
     }
   }
 
@@ -30,7 +31,7 @@ export class FilesUtils{
           await fs.mkdir(file, { recursive:true })
       } catch (error) {
           console.error('[ERROR] Error al asegurar la ruta')
-          throw new Error('Error al asegurar la ruta')
+          throw new InternalServerError('Error al asegurar la ruta')
       }
   }
 

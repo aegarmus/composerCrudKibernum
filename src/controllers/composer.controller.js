@@ -1,7 +1,7 @@
 import { ComposerService } from "../service/composer.service.js";
 
 export class ComposerController {
-  static async create(req, res) {
+  static async create(req, res, next) {
     try {
       const data = await ComposerService.create(req.body);
       res.status(201).json({
@@ -10,14 +10,10 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se creó el compositor",
-        code: 500,
-        error,
-      });
+      next(error)
     }
   }
-  static async getAllData(req, res) {
+  static async getAllData(req, res, next) {
     try {
       const data = await ComposerService.readData();
 
@@ -27,15 +23,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(404).json({
-        message: "No se pudo encontrar la data",
-        statusCode: 404,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async getAllActive(req, res) {
+  static async getAllActive(req, res, next) {
     try {
       const data = await ComposerService.getAllActive();
 
@@ -45,15 +37,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(404).json({
-        message: "No se pudo encontrar la data",
-        statusCode: 404,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async getByID(req, res) {
+  static async getByID(req, res, next) {
     try {
       const data = await ComposerService.getByID(req.params.id);
       res.status(200).json({
@@ -62,15 +50,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(404).json({
-        message: `Compositor no encontrado`,
-        statusCode: 404,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async getActiveByID(req, res) {
+  static async getActiveByID(req, res, next) {
     try {
       const data = await ComposerService.getActiveByID(req.params.id);
       res.status(200).json({
@@ -79,15 +63,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(404).json({
-        message: `Compositor no encontrado`,
-        statusCode: 404,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async update(req, res) {
+  static async update(req, res, next) {
     try {
       const data = await ComposerService.update(req.params.id, req.body);
       res.status(200).json({
@@ -96,15 +76,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se pudo editar compositor",
-        statusCode: 500,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async updateActive(req, res) {
+  static async updateActive(req, res, next) {
     try {
       const data = await ComposerService.updateActive(req.params.id, req.body);
       res.status(200).json({
@@ -113,15 +89,11 @@ export class ComposerController {
         data,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se pudo editar compositor",
-        statusCode: 500,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async permaDelete(req, res) {
+  static async permaDelete(req, res, next) {
     try {
       await ComposerService.delete(req.params.id);
 
@@ -130,15 +102,11 @@ export class ComposerController {
         statusCode: 200,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se pudo eliminar al compositor",
-        statusCode: 500,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async delete(req, res) {
+  static async delete(req, res, next) {
     try {
       await ComposerService.softDelete(req.params.id);
       res.status(200).json({
@@ -146,15 +114,11 @@ export class ComposerController {
         statusCode: 200,
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se pudo eliminar al compositor",
-        statusCode: 500,
-        error,
-      });
+      next(error);
     }
   }
 
-  static async restore(req, res) {
+  static async restore(req, res, next) {
     try {
       const data = await ComposerService.restore(req.params.id)
 
@@ -164,11 +128,7 @@ export class ComposerController {
         data
       });
     } catch (error) {
-      res.status(500).json({
-        message: "No se pudo restaurar al compositor",
-        statusCode: 500,
-        error,
-      });
+      next(error);
     }
   }
 }
