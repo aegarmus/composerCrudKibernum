@@ -3,7 +3,7 @@ import { FilesUtils } from "../utils/file.util.js";
 import { Logger } from "../utils/logger.util.js";
 export class ComposerService {
   static #Pathfile = "./src/data/composer.json";
-  logger = new Logger('Composer')
+  static logger = new Logger('Composer'); // Cambiar a estática
 
   static async create(composer) {
 

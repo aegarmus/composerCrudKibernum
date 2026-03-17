@@ -8,6 +8,8 @@ Composer
     dateDeath
 */
 
+import { Validate } from "../utils/validator.util.js";
+
 export class Composer {
   #id;
   #name;
@@ -18,10 +20,10 @@ export class Composer {
 
   constructor(name, nationality, birthdate, dateDeath, id, isActive) {
     this.#id = id || crypto.randomUUID();
-    this.#name = name;
-    this.#nationality = nationality;
-    this.#birthdate = birthdate;
-    this.#dateDeath = dateDeath;
+    this.#name = Validate.name(name, 'nombre');
+    this.#nationality = Validate.name(nationality, 'Nacionalidad');
+    this.#birthdate = Validate.date(birthdate, 'Fecha de nacimiento');
+    this.#dateDeath = Validate.date(dateDeath, 'Fecha de defunción');
     this.#isActive = isActive ?? true;
   }
 
@@ -50,16 +52,16 @@ export class Composer {
   }
 
   setName(name) {
-    this.#name = name;
+    this.#name = Validate.name(name, 'nombre');
   }
   setNationality(nationality) {
-    this.#nationality = nationality;
+    this.#nationality = Validate.name(nationality, ' Nacionalidad');
   }
   setBirthdate(birthdate) {
-    this.#birthdate = birthdate;
+    this.#birthdate = Validate.date(birthdate, 'fecha nacimiento');
   }
   setDateDeath(dateDeath) {
-    this.#dateDeath = dateDeath;
+    this.#dateDeath = Validate.date(dateDeath, 'fecha de defunción');
   }
 
   desactivate() {
@@ -94,7 +96,7 @@ export class Composer {
   static create(data) {
     try {
       const { name, nationality, birthdate, dateDeath, id, isActive } = data;
-      const composer = new Composer(
+      return new Composer(
         name,
         nationality,
         birthdate,
@@ -102,7 +104,7 @@ export class Composer {
         id,
         isActive
       );
-      return composer;
+      
     } catch (error) {
       console.error("Error creating composer:", error);
       throw new Error("Failed to create composer");
