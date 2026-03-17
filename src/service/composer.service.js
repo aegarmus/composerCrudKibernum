@@ -1,26 +1,46 @@
 import { Composer } from "../models/Composer.js";
 import { FilesUtils } from "../utils/file.util.js";
+import { Logger } from "../utils/logger.util.js";
 export class ComposerService {
   static #Pathfile = "./src/data/composer.json";
+  logger = new Logger('Composer')
 
   static async create(composer) {
+
     try {
+      this.logger.info('Inciando Proceso de creación de compositor')
+
+      this.logger.info(`Asegurando ruta ${this.#Pathfile}`);
       await FilesUtils.pathEnsure(this.#Pathfile); //se asegura que el archivo exista
+
+      this.logger.info('Buscando compositores registrados')
       const composers = await FilesUtils.readFile(this.#Pathfile); // lee los compositores actuales
+
+      this.logger.debug('Creando nueva instancia de compositor')
       const newComposer = Composer.create(composer); // crea un nuevo compositor a partir de los datos proporcionados
+      this.logger.debug(`Nueva instancia creada: ${JSON.stringify(newComposer.toFullJSON())}`)
 
       //Asegurar que los compositores existen
       if (!composers) {
+        this.logger.warn('No hay registro de compositores previos')
         const composerData = [newComposer.toFullJSON()];
+        this.logger.debug(`Creando nueva estructura para archivo JSON: ${composerData}`)
+
+        this.logger.info(`Creando el archivo`)
         await FilesUtils.writeFile(this.#Pathfile, composerData);
+        this.logger.info(`Archivo creado con éxito`)
         return newComposer.toJSON();
       }
-
+      
+      this.logger.info('Agregando nuevo compositor')
       composers.push(newComposer.toFullJSON()); // agregar el nuevo compositor al arreglo
+
+      this.logger.info(`Creando el archivo`)
       await FilesUtils.writeFile(this.#Pathfile, composers);
+      this.logger.info(`Archivo creado con éxito`)
       return newComposer.toJSON();
     } catch (error) {
-      console.error("Error al crear el compositor:", error.message);
+      this.logger.error(`Error al crear el compositor: ${error.message}`);
       throw new Error(error.message);
     }
   }
