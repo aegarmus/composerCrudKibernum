@@ -16,7 +16,7 @@ export class ComposerController {
   static async getAllData(req, res, next) {
     try {
       const data = await ComposerService.readData();
-
+ 
       res.status(200).json({
         message: "Archivo leido con éxito",
         statusCode: 200,

@@ -26,6 +26,12 @@ export class ComposerError extends AppError {
     }
 }
 
+export class EmailError extends AppError {
+    constructor(message, details, statusCode) {
+        super(message || 'Error en el servicio de email', statusCode || 500, details)
+    }
+}
+
 export class InternalServerError extends AppError {
     constructor(message, details){
         super(message || 'Error interno de servidor', 500, details)
