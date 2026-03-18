@@ -18,7 +18,7 @@ export class ComposerService {
       const composers = await FilesUtils.readFile(this.#Pathfile); // lee los compositores actuales
 
       this.logger.debug('Creando nueva instancia de compositor')
-      const newComposer = Composer.create(composer); // crea un nuevo compositor a partir de los datos proporcionados
+      const newComposer = Composer.create(composer); // cr-ea un nuevo compositor a partir de los datos proporcionados
       this.logger.debug(`Nueva instancia creada: ${JSON.stringify(newComposer.toFullJSON())}`)
 
       //Asegurar que los compositores existen
